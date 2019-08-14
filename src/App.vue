@@ -14,3 +14,14 @@ export default {
   }
 }
 </script>
+<style>
+.clearfix:after {
+  content: " ";
+  display: block;
+  height: 0;
+  clear: both;
+}
+.clearfix {
+  zoom: 1;
+}
+</style>

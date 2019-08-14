@@ -66,15 +66,6 @@ export default {
 
 
 <style lang="less" scoped>
-.clearfix:after {
-  content: " ";
-  display: block;
-  height: 0;
-  clear: both;
-}
-.clearfix {
-  zoom: 1;
-}
 ul {
   padding: 10px;
   margin: 0;

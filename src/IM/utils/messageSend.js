@@ -36,7 +36,7 @@ export const handleMessageSend = (msgContent, currentIMInfo, currentLoginInfo) =
   const MSG = new webIM.Msg(selSessObject, isSend, seq, random, msgTime, currentLoginInfo.identifier, subType, currentLoginInfo.identifierNick);
 
   // 解析文本和表情
-  addMSGText(MSG, msgContent)
+  MSG.addText(new webIM.Msg.Elem.Text(msgContent))
 
   MSG.PushInfo = {
     "PushFlag": 0,
@@ -68,41 +68,41 @@ export const handleMessageSend = (msgContent, currentIMInfo, currentLoginInfo) =
 }
 
 /**
- * 解析文本和表情
+ * 解析文本和表情   // 这个是 复制 IM demo 正则匹配 [喜欢] 类似这种表情  eg: '大师的[大哭]数据库防[喜欢]静电'  ==> ["[大哭]", "[喜欢]"]
  */
-const addMSGText = (msg, msgContent) => {
-  let text_obj, face_obj, tmsg, emotionIndex, emotion, restMsgIndex
-  const expr = /\[[^[\]]{1,3}\]/mg
-  const emotions = msgContent.match(expr)
-  if (!emotions || emotions.length < 1) {
-    text_obj = new webIM.Msg.Elem.Text(msgContent);
-    msg.addText(text_obj)
-  } else {
-    for (var i = 0; i < emotions.length; i++) {
-      tmsg = msgContent.substring(0, msgContent.indexOf(emotions[i]));
-      if (tmsg) {
-        text_obj = new webIM.Msg.Elem.Text(tmsg)
-        msg.addText(text_obj)
-      }
-      emotionIndex = webIM.EmotionDataIndexs[emotions[i]];
-      emotion = webIM.Emotions[emotionIndex];
+// const addMSGText = (msg, msgContent) => {
+//   let text_obj, face_obj, tmsg, emotionIndex, emotion, restMsgIndex
+//   const expr = /\[[^[\]]{1,3}\]/mg  
+//   const emotions = msgContent.match(expr)
+//   if (!emotions || emotions.length < 1) {
+//     text_obj = new webIM.Msg.Elem.Text(msgContent);
+//     msg.addText(text_obj)
+//   } else {
+//     for (var i = 0; i < emotions.length; i++) {
+//       tmsg = msgContent.substring(0, msgContent.indexOf(emotions[i]));
+//       if (tmsg) {
+//         text_obj = new webIM.Msg.Elem.Text(tmsg)
+//         msg.addText(text_obj)
+//       }
+//       emotionIndex = webIM.EmotionDataIndexs[emotions[i]];
+//       emotion = webIM.Emotions[emotionIndex];
 
-      if (emotion) {
-        face_obj = new webIM.Msg.Elem.Face(emotionIndex, emotions[i]);
-        msg.addFace(face_obj)
-      } else {
-        text_obj = new webIM.Msg.Elem.Text(emotions[i])
-        msg.addText(text_obj)
-      }
-      restMsgIndex = msgContent.indexOf(emotions[i]) + emotions[i].length
-      msgContent = msgContent.substring(restMsgIndex)
-    }
-    if (msgContent) {
-      text_obj = new webIM.Msg.Elem.Text(msgContent)
-      msg.addText(text_obj)
-    }
-  }
-}
+//       if (emotion) {
+//         face_obj = new webIM.Msg.Elem.Face(emotionIndex, emotions[i]);
+//         msg.addFace(face_obj)
+//       } else {
+//         text_obj = new webIM.Msg.Elem.Text(emotions[i])
+//         msg.addText(text_obj)
+//       }
+//       restMsgIndex = msgContent.indexOf(emotions[i]) + emotions[i].length
+//       msgContent = msgContent.substring(restMsgIndex)
+//     }
+//     if (msgContent) {
+//       text_obj = new webIM.Msg.Elem.Text(msgContent)
+//       msg.addText(text_obj)
+//     }
+//   }
+// }
 /**
  * 发送自定义数据
  */

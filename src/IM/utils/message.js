@@ -105,7 +105,7 @@ const convertMsgtoObjct = (msg) => {
           }
         }
         break
-      case webIM.MSG_ELEMENT_TYPE.SOUND: // 圣品
+      case webIM.MSG_ELEMENT_TYPE.SOUND: // 声音
         break
       case webIM.MSG_ELEMENT_TYPE.FILE: // 文件
         break

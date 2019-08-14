@@ -32,7 +32,7 @@
   </div>
 </template>
 <script>
-import SendCustomJSON from './SendCustomJSON'
+import { SendCustomJSON } from './SendJSONData'
 import { sendCustomMsg } from '../utils/messageSend'
 import { addNewMessage } from '../utils/message'
 import { mapMutations } from 'vuex'

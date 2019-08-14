@@ -3,6 +3,8 @@
     <div class="header">
       <!-- 自定义消息 -->
       <SendCustom></SendCustom>
+      <!-- 表情 -->
+      <SendFace></SendFace>
     </div>
     <div class="body">
       <div class="input-wrapper">
@@ -20,11 +22,13 @@ import { addNewMessage } from './utils/message'
 import { mapGetters, mapMutations } from 'vuex'
 
 import SendCustom from './components/SendCustom'
+import SendFace from './components/SendFace'
 
 export default {
   name: 'ChatInput',
   components: {
-    SendCustom
+    SendCustom,
+    SendFace
   },
   data () {
     return {

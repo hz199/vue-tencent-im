@@ -1,4 +1,6 @@
-const config = [
+
+// 发送自定义信息的数据
+export const SendCustomJSON = [
   {
     goodsName: '测试名字1',
     goodsImage: 'http://study.closeeyes.cn/im1.jpg',
@@ -19,4 +21,10 @@ const config = [
   }
 ]
 
-export default config
+export const SendFaceJSON = [
+  'http://study.closeeyes.cn/face_1.gif',
+  'http://study.closeeyes.cn/face_2.gif',
+  'http://study.closeeyes.cn/face_3.gif',
+  'http://study.closeeyes.cn/face_4.gif',
+  'http://study.closeeyes.cn/face_5.gif',
+]
