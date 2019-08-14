@@ -1,11 +1,12 @@
 <template>
   <ul id="chat_list_wrapper" ref="UL">
     <li v-for="item in getCurrentIMInfoMessages" :key="item.time" class="clearfix">
-      <div class="textLeft" v-if="!item.isSelfSend">
-        <div class="headImage">
+      <div :class="item.isSelfSend ? 'textRight' : 'textLeft'">
+        <!-- 左侧头像 -->
+        <div class="headImage" v-if="!item.isSelfSend">
           <img width="40" height="40" :src="item.fromAccountImage" alt="">
         </div>
-        <div class="chat-wrapper" style="margin-left: 10px;">
+        <div class="chat-wrapper" :style="item.isSelfSend ? 'margin-right: 10px;' :'margin-left: 10px;'">
           <!-- 文本 start -->
           <TextContent
             v-if="item.msgOptions.type === MSG_ELEMENT_TYPE.TEXT"
@@ -19,31 +20,19 @@
           >
           </ImageContent>
           <!-- 图片 end -->
+          <!-- 自定义内容 start -->
+          <CustomContent
+            v-if="item.msgOptions.type === MSG_ELEMENT_TYPE.CUSTOM"
+            :customOptions="item.msgOptions"
+          ></CustomContent>
+          <!-- 自定义内容 end -->
         </div>
-      </div>
-
-      <div class="textRight" v-else>
-        <div class="chat-wrapper" style="margin-right: 10px;">
-          <!-- 文本 start -->
-          <TextContent
-            v-if="item.msgOptions.type === MSG_ELEMENT_TYPE.TEXT"
-            :text="item.msgOptions.text"></TextContent>
-          <!-- 文本 end -->
-
-          <!-- 图片 start -->
-          <ImageContent
-            v-if="item.msgOptions.type === MSG_ELEMENT_TYPE.IMAGE"
-            :imagesOptions="item.msgOptions"
-          >
-          </ImageContent>
-          <!-- 图片 end -->
-        </div>
-        <div class="headImage">
+        <!-- 右侧头像 -->
+        <div class="headImage" v-if="item.isSelfSend">
           <img width="40" height="40" :src="item.fromAccountImage" alt="">
         </div>
       </div>
     </li>
-
   </ul>
 </template>
 <script>
@@ -52,12 +41,14 @@ import wenIM from '../../sdk/webim'
 
 import TextContent from './TextContent'
 import ImageContent from './ImageContent'
+import CustomContent from './CustomContent'
 
 export default {
   name: 'ChatAreaList',
   components: {
     TextContent,
-    ImageContent
+    ImageContent,
+    CustomContent
   },
   data () {
     return {

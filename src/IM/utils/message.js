@@ -111,7 +111,11 @@ const convertMsgtoObjct = (msg) => {
         break
       case webIM.MSG_ELEMENT_TYPE.LOCATION: // 位置
         break
-      case webIM.MSG_ELEMENT_TYPE.CUSTOM:
+      case webIM.MSG_ELEMENT_TYPE.CUSTOM: // 自定义消息
+        messageObject = {
+          type: webIM.MSG_ELEMENT_TYPE.CUSTOM,
+          data: convertCustomMsg(content)
+        }
         break
       case webIM.MSG_ELEMENT_TYPE.GROUP_TIP: // 群提示
         break
@@ -146,3 +150,15 @@ const convertImageMsg = (content, imageName = null) => {
     imageName
   }
 }
+
+/**
+ * 解析自定义数据 发送过来的对象转化成了字符串
+ */
+const convertCustomMsg = (content) => {
+  try {
+    return JSON.parse(content.getData())
+  } catch(err) {
+    return {}
+  }
+}
+

@@ -1,6 +1,11 @@
 
 import webIM from '../sdk/webim'
+import $store from '../../store'
+import {addNewMessage} from './message' 
 
+/**
+ * 发送文本消息
+ */
 export const handleMessageSend = (msgContent, currentIMInfo, currentLoginInfo) => {
   // 当前聊天的对象 从 vuex 去除
   // const currentIMInfo = $store.state.IM.currentIMInfo
@@ -97,4 +102,40 @@ const addMSGText = (msg, msgContent) => {
       msg.addText(text_obj)
     }
   }
+}
+/**
+ * 发送自定义数据
+ */
+export const sendCustomMsg = (msgContent) => {
+  // 当前聊天的对象 从 vuex 去除
+  const currentIMInfo = $store.state.currentIMInfo
+  // 当前登陆者信息
+  const currentLoginInfo = $store.state.imUserInfo
+
+  const selSessObject = new webIM.Session(
+    currentIMInfo.selType, // 聊天类型
+    currentIMInfo.selToID, // 向谁发送消息 账号ID
+    currentIMInfo.selToID,
+    currentIMInfo.selToHeadUrl, // 头像
+    Math.round(new Date().getTime() / 1000) // 时间戳
+  )
+
+  const MSG = new webIM.Msg(selSessObject, true, -1, -1, -1, currentLoginInfo.identifier, 0, currentLoginInfo.identifierNick)
+  
+  // webIM.Msg.Elem.Custom对象接收三个字段 数据， 描述，扩展 。其中数据第一位参数 不能是对象 转化成字符串
+  const customObj = new webIM.Msg.Elem.Custom(JSON.stringify(msgContent))
+  MSG.addCustom(customObj)
+  //调用发送消息接口
+  MSG.sending = 1
+  
+  return new Promise((reslove, reject) => {
+    webIM.sendMsg(MSG, function (resp) {
+      reslove({
+        MSG: MSG,
+        callOkMessage: resp
+      })
+    }, function (err) {
+      reject(err)
+    })
+  })
 }

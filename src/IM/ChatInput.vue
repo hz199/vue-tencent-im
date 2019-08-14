@@ -1,6 +1,9 @@
 <template>
   <div class="ChatInput">
-    <div class="header"></div>
+    <div class="header">
+      <!-- 自定义消息 -->
+      <SendCustom></SendCustom>
+    </div>
     <div class="body">
       <div class="input-wrapper">
         <textarea v-model="currentMessage"></textarea>
@@ -16,8 +19,13 @@ import { handleMessageSend } from './utils/messageSend'
 import { addNewMessage } from './utils/message'
 import { mapGetters, mapMutations } from 'vuex'
 
+import SendCustom from './components/SendCustom'
+
 export default {
   name: 'ChatInput',
+  components: {
+    SendCustom
+  },
   data () {
     return {
       currentMessage: ''
@@ -63,6 +71,14 @@ export default {
   .header {
     height: 40px;
     border-bottom: 1px solid #eee;
+    display: flex;
+    > div {
+      width: 40px;
+      line-height: 40px;
+      text-align: center;
+      cursor: pointer;
+      color: #999;
+    }
   }
   .body {
     flex-grow: 1;
