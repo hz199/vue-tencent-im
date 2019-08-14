@@ -34,6 +34,9 @@
 <script>
 import SendCustomJSON from './SendCustomJSON'
 import { sendCustomMsg } from '../utils/messageSend'
+import { addNewMessage } from '../utils/message'
+import { mapMutations } from 'vuex'
+
 export default {
   // 发送自定义消息
   name: 'sendCustom',
@@ -44,6 +47,9 @@ export default {
     }
   },
   methods: {
+    ...mapMutations([
+      'pushCurrentIMInfoMessages'
+    ]),
     handleDrawer () {
       this.drawerVisible = true
     },
@@ -51,6 +57,9 @@ export default {
       sendCustomMsg(JSON.parse(JSON.stringify(item))).then(res => {
         if (res.callOkMessage.ActionStatus === 'OK') {
           this.drawerVisible = false
+
+          // 向聊天历史记录里面 PUSH 一条数据
+          this.pushCurrentIMInfoMessages(addNewMessage(res.MSG))
         }
       }).catch(() => {
         // TODO 发送失败
