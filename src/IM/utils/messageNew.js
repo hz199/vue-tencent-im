@@ -1,10 +1,10 @@
 import $store from '../../store'
-import { addNewMessage } from './message'
+import { analysisNewMessage } from './message'
 /**
  * 处理新消息
  */
 export function handleNewMessage(newMsgList) {
-  const newMessage = addNewMessage(newMsgList[0])
+  const newMessage = analysisNewMessage(newMsgList[0])
 
   $store.commit('pushCurrentIMInfoMessages', newMessage)
 }

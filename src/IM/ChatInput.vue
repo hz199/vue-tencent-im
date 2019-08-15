@@ -18,7 +18,7 @@
 </template>
 <script>
 import { handleMessageSend } from './utils/messageSend'
-import { addNewMessage } from './utils/message'
+import { analysisNewMessage } from './utils/message'
 import { mapGetters, mapMutations } from 'vuex'
 
 import SendCustom from './components/SendCustom'
@@ -56,7 +56,7 @@ export default {
           // 发送成功之后输入框清空
           this.currentMessage = ''
 
-          this.pushCurrentIMInfoMessages(addNewMessage(res.MSG))
+          this.pushCurrentIMInfoMessages(analysisNewMessage(res.MSG))
         }
       }).catch(() => {
         this.$message.error('发送消息失败！')

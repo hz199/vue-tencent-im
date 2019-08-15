@@ -1,7 +1,7 @@
 
 import webIM from '../sdk/webim'
 import $store from '../../store'
-import {addNewMessage} from './message' 
+// import {analysisNewMessage} from './message' 
 
 /**
  * 发送文本消息
@@ -127,6 +127,52 @@ export const sendCustomMsg = (msgContent) => {
   MSG.addCustom(customObj)
   //调用发送消息接口
   MSG.sending = 1
+  
+  return new Promise((reslove, reject) => {
+    webIM.sendMsg(MSG, function (resp) {
+      reslove({
+        MSG: MSG,
+        callOkMessage: resp
+      })
+    }, function (err) {
+      reject(err)
+    })
+  })
+}
+
+/**
+ * 发送表情
+ */
+export const sendFaceMsg = (msgContent) => {
+  // 当前聊天的对象 从 vuex 去除
+  const currentIMInfo = $store.state.currentIMInfo
+  // 当前登陆者信息
+  const currentLoginInfo = $store.state.imUserInfo
+
+  const selSessObject = new webIM.Session(
+    currentIMInfo.selType, // 聊天类型
+    currentIMInfo.selToID, // 向谁发送消息 账号ID
+    currentIMInfo.selToID,
+    currentIMInfo.selToHeadUrl, // 头像
+    Math.round(new Date().getTime() / 1000) // 时间戳
+  )
+
+  const isSend = true //是否为自己发送
+  const seq = -1 //消息序列，-1表示sdk自动生成，用于去重
+  const random = Math.round(Math.random() * 4294967296) //消息随机数，用于去重
+  const msgTime = Math.round(new Date().getTime() / 1000) //消息时间戳
+  let subType //消息子类型
+  if (currentIMInfo.selType == webIM.SESSION_TYPE.C2C) {
+    subType = webIM.C2C_MSG_SUB_TYPE.COMMON
+  } else {
+    subType = webIM.GROUP_MSG_SUB_TYPE.COMMON
+  }
+
+  // 构建要发送的消息
+  const MSG = new webIM.Msg(selSessObject, isSend, seq, random, msgTime, currentLoginInfo.identifier, subType, currentLoginInfo.identifierNick);
+
+  // 表情
+  MSG.addFace(new webIM.Msg.Elem.Face(0, msgContent))
   
   return new Promise((reslove, reject) => {
     webIM.sendMsg(MSG, function (resp) {

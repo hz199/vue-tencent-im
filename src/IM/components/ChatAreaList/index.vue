@@ -26,6 +26,12 @@
             :customOptions="item.msgOptions"
           ></CustomContent>
           <!-- 自定义内容 end -->
+          <!-- 表情 start -->
+          <FaceContent
+            v-if="item.msgOptions.type === MSG_ELEMENT_TYPE.FACE"
+            :FaceOptions="item.msgOptions"
+          ></FaceContent>
+          <!-- 表情 end -->
         </div>
         <!-- 右侧头像 -->
         <div class="headImage" v-if="item.isSelfSend">
@@ -42,13 +48,15 @@ import wenIM from '../../sdk/webim'
 import TextContent from './TextContent'
 import ImageContent from './ImageContent'
 import CustomContent from './CustomContent'
+import FaceContent from './FaceContent'
 
 export default {
   name: 'ChatAreaList',
   components: {
     TextContent,
     ImageContent,
-    CustomContent
+    CustomContent,
+    FaceContent
   },
   data () {
     return {

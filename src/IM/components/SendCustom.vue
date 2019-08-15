@@ -34,7 +34,7 @@
 <script>
 import { SendCustomJSON } from './SendJSONData'
 import { sendCustomMsg } from '../utils/messageSend'
-import { addNewMessage } from '../utils/message'
+import { analysisNewMessage } from '../utils/message'
 import { mapMutations } from 'vuex'
 
 export default {
@@ -59,7 +59,7 @@ export default {
           this.drawerVisible = false
 
           // 向聊天历史记录里面 PUSH 一条数据
-          this.pushCurrentIMInfoMessages(addNewMessage(res.MSG))
+          this.pushCurrentIMInfoMessages(analysisNewMessage(res.MSG))
         }
       }).catch(() => {
         // TODO 发送失败

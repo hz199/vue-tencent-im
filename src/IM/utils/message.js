@@ -4,7 +4,7 @@ import $store from '../../store'
 /**
  * 添加一个新消息 MSG 对象解析成 JSON
  */
-export const addNewMessage = (message) => {
+export const analysisNewMessage = (message) => {
   if (!message) {return {}}
 
   let isSelfSend =message.getIsSend() //消息是否为自己发的
@@ -87,6 +87,10 @@ const convertMsgtoObjct = (msg) => {
         }
         break
       case webIM.MSG_ELEMENT_TYPE.FACE: // 表情
+      messageObject = {
+        face: convertFacetMsg(content),
+        type: webIM.MSG_ELEMENT_TYPE.FACE
+      }
         break
       case webIM.MSG_ELEMENT_TYPE.IMAGE: // 图片
         // 两张以上的图片 ？
@@ -160,5 +164,9 @@ const convertCustomMsg = (content) => {
   } catch(err) {
     return {}
   }
+}
+
+const convertFacetMsg = (content) => {
+  return content.getData()
 }
 

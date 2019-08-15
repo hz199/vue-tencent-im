@@ -5,16 +5,19 @@
       width="400"
       trigger="click">
         <div class="face-wrapper clearfix">
-          <div class="face-item" v-for="item in SendFaceJSON" :key="item">
+          <div class="face-item" v-for="item in SendFaceJSON" :key="item" @click="handleFace(item)">
             <img :src="item" alt="">
           </div>
         </div>
-      <i ref="faceRef" class="el-icon-s-shop" slot="reference" @click="handleFace"></i>
+      <i ref="faceRef" class="el-icon-s-shop" slot="reference"></i>
     </el-popover>
   </div>
 </template>
 <script>
 import { SendFaceJSON } from './SendJSONData'
+import { sendFaceMsg } from '../utils/messageSend'
+import { mapMutations } from 'vuex'
+import { analysisNewMessage } from '../utils/message'
 
 export default {
   name: 'SendFace',
@@ -24,8 +27,19 @@ export default {
     }
   },
   methods: {
-    handleFace () {
-      
+    ...mapMutations([
+      'pushCurrentIMInfoMessages'
+    ]),
+    handleFace (item) {
+      sendFaceMsg(item).then(res => {
+        if (res.callOkMessage.ActionStatus === 'OK') {
+
+          // 向聊天历史记录里面 PUSH 一条数据
+          this.pushCurrentIMInfoMessages(analysisNewMessage(res.MSG))
+        }
+      }).catch((err) => {
+        console.error('发送表情：', err)
+      })
     }
   }
 }

@@ -3,7 +3,7 @@ import Vuex from 'vuex'
 
 import webIM from './IM/sdk/webim'
 import { GenderMapText, AllowTypeMapText } from './IM/utils/mapText'
-import { addNewMessage } from './IM/utils/message'
+import { analysisNewMessage } from './IM/utils/message'
 
 Vue.use(Vuex)
 
@@ -104,9 +104,9 @@ export default new Vuex.Store({
     // 设置当前聊天对象的 历史聊天记录
     setCurrentIMInfoMessages (store, payload = []) {
       const newMsgList = payload.map(item => {
-        return addNewMessage(item)
+        return analysisNewMessage(item)
       })
-      // console.log(addNewMessage(payload[14]))
+      // console.log(analysisNewMessage(payload[14]))
       store.currentIMInfoMessages = newMsgList
     },
     // 向当前两天对象的聊天历史记录里面 push  一条新数据
