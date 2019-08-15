@@ -1,5 +1,5 @@
 <template>
-  <div class="sendCustom">
+  <div class="SendFace">
     <el-popover
       placement="top"
       width="400"

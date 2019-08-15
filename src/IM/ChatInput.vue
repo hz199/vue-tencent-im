@@ -5,10 +5,16 @@
       <SendCustom></SendCustom>
       <!-- 表情 -->
       <SendFace></SendFace>
+      <!-- 图片 -->
+      <SendImage></SendImage>
     </div>
     <div class="body">
       <div class="input-wrapper">
-        <textarea v-model="currentMessage"></textarea>
+        <!-- <textarea v-model="currentMessage"></textarea> -->
+        <!-- <p contentEditable="true">
+          <img src="http://study.closeeyes.cn/music.jpg" />
+        </p> -->
+        <EditDiv v-model="currentMessage"></EditDiv>
       </div>
       <div class="btn-wrapper">
         <el-button class="btn" type="primary" @click="submitNewMsg">发送</el-button>
@@ -23,12 +29,16 @@ import { mapGetters, mapMutations } from 'vuex'
 
 import SendCustom from './components/SendCustom'
 import SendFace from './components/SendFace'
+import SendImage from './components/SendImage'
+import EditDiv from './components/EditDiv'
 
 export default {
   name: 'ChatInput',
   components: {
     SendCustom,
-    SendFace
+    SendFace,
+    SendImage,
+    EditDiv
   },
   data () {
     return {
@@ -89,7 +99,8 @@ export default {
     position: relative;
     display: flex;
     .input-wrapper {
-      flex: 1
+      flex: 1;
+      // overflow: auto;
     }
     .btn-wrapper {
       width: 100px;

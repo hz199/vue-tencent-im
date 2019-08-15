@@ -1,6 +1,6 @@
 <template>
   <img
-    width="100"
+    width="300"
     :src="imagesOptions.images.oriImage" alt="">
 </template>
 <script>
