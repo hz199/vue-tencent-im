@@ -66,7 +66,7 @@ export default {
           // 发送成功之后输入框清空
           this.currentMessage = ''
 
-          this.pushCurrentIMInfoMessages(analysisNewMessage(res.MSG))
+          this.pushCurrentIMInfoMessages(...analysisNewMessage(res.MSG))
         }
       }).catch(() => {
         this.$message.error('发送消息失败！')

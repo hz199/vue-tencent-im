@@ -30,11 +30,11 @@ export const analysisNewMessage = (message) => {
   // 消息前缀
   let msgTextPrefix = ''
   // 消息信息
-  let msgOptions = {}
+  let msgOptionsArray = []  // 得到的新消息变成了数组
   switch (subType) {
     case webIM.GROUP_MSG_SUB_TYPE.COMMON: //普通消息 
       msgTextPrefix = '[普通消息]'
-      msgOptions = convertMsgtoObjct(message)
+      msgOptionsArray = convertMsgtoObjct(message) // 得到的新消息变成了数组
       break
     case webIM.GROUP_MSG_SUB_TYPE.REDPACKET: //群红包消息
       msgTextPrefix = '[群红包消息]'
@@ -49,17 +49,19 @@ export const analysisNewMessage = (message) => {
 
   /************************处理子类型消息 end *********************/
 
-  const results = {
-    isSelfSend, // 是否是自己发的消息
-    fromAccount, // 消息出处
-    fromAccountNick, // 昵称
-    fromAccountImage, // 邮箱
-    subType, // 子消息类型
-    sessType, // 消息类型 webim.SESSION_TYPE.GROUP-群聊 webim.SESSION_TYPE.C2C-私聊，
-    msgTextPrefix, // 消息前缀
-    msgOptions, // 消息信息 文本 图片 什么的
-    msgTime // 消息时间
-  }
+  const results = msgOptionsArray.map(item => {
+    return {
+      isSelfSend, // 是否是自己发的消息
+      fromAccount, // 消息出处
+      fromAccountNick, // 昵称
+      fromAccountImage, // 邮箱
+      subType, // 子消息类型
+      sessType, // 消息类型 webim.SESSION_TYPE.GROUP-群聊 webim.SESSION_TYPE.C2C-私聊，
+      msgTextPrefix, // 消息前缀
+      msgOptions: item, // 消息信息 文本 图片 什么的
+      msgTime // 消息时间
+    }
+  })
 
   return results
 }
@@ -72,8 +74,7 @@ const convertMsgtoObjct = (msg) => {
   let elem = null
   let type = null
   let content = null
-  let messageObject = {}
-
+  let messageObject = []  // 之前声明的是对象现在是数组 
   for (let i = 0; i < elemsLength; i++) {
     elem = elems[i]
     type = elem.getType(); //获取元素类型
@@ -81,32 +82,32 @@ const convertMsgtoObjct = (msg) => {
 
     switch (type) {
       case webIM.MSG_ELEMENT_TYPE.TEXT: // 文本
-        messageObject = {
+        messageObject.push({
           text: convertTextMsg(content),
           type: webIM.MSG_ELEMENT_TYPE.TEXT
-        }
+        })
         break
       case webIM.MSG_ELEMENT_TYPE.FACE: // 表情
-      messageObject = {
-        face: convertFacetMsg(content),
-        type: webIM.MSG_ELEMENT_TYPE.FACE
-      }
+        messageObject.push({
+          face: convertFacetMsg(content),
+          type: webIM.MSG_ELEMENT_TYPE.FACE
+        })
         break
       case webIM.MSG_ELEMENT_TYPE.IMAGE: // 图片
         // 两张以上的图片 ？
         if (i <= elemsLength - 2) {
           const customMsgElem = elems[i + 1] //获取保存图片名称的自定义消息elem
           const imgName = customMsgElem.getContent().getData() //业务可以自定义保存字段，demo中采用data字段保存图片文件名
-          messageObject = {
+          messageObject.push({
             type: webIM.MSG_ELEMENT_TYPE.IMAGE,
             images: convertImageMsg(content, imgName)
-          }
+          })
           i++ //下标向后移一位
         } else {
-          messageObject = {
+          messageObject.push({
             type: webIM.MSG_ELEMENT_TYPE.IMAGE,
             images: convertImageMsg(content)
-          }
+          })
         }
         break
       case webIM.MSG_ELEMENT_TYPE.SOUND: // 声音
@@ -116,10 +117,10 @@ const convertMsgtoObjct = (msg) => {
       case webIM.MSG_ELEMENT_TYPE.LOCATION: // 位置
         break
       case webIM.MSG_ELEMENT_TYPE.CUSTOM: // 自定义消息
-        messageObject = {
+        messageObject.push({
           type: webIM.MSG_ELEMENT_TYPE.CUSTOM,
           data: convertCustomMsg(content)
-        }
+        })
         break
       case webIM.MSG_ELEMENT_TYPE.GROUP_TIP: // 群提示
         break

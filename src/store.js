@@ -107,11 +107,12 @@ export default new Vuex.Store({
         return analysisNewMessage(item)
       })
       // console.log(analysisNewMessage(payload[14]))
-      store.currentIMInfoMessages = newMsgList
+      console.log(newMsgList.flat(Infinity))
+      store.currentIMInfoMessages = newMsgList.flat(Infinity)
     },
     // 向当前两天对象的聊天历史记录里面 push  一条新数据
     pushCurrentIMInfoMessages (store, payload) {
-      store.currentIMInfoMessages.push(payload)
+      store.currentIMInfoMessages.push(...payload)
     }
   },
   actions: {

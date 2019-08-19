@@ -67,8 +67,8 @@ export default {
         if (res.callOkMessage.ActionStatus === 'OK') {
           // 弹框消失
           this.dialogVisible = false
-          // 向聊天历史记录里面 PUSH 一条数据
-          this.pushCurrentIMInfoMessages(analysisNewMessage(res.MSG))
+          // 向聊天历史记录里面 PUSH 一条数据 或者 多条
+          this.pushCurrentIMInfoMessages(...analysisNewMessage(res.MSG))
         }
       }).catch((err) => {
         console.error('发送表情：', err)

@@ -58,8 +58,8 @@ export default {
         if (res.callOkMessage.ActionStatus === 'OK') {
           this.drawerVisible = false
 
-          // 向聊天历史记录里面 PUSH 一条数据
-          this.pushCurrentIMInfoMessages(analysisNewMessage(res.MSG))
+          // 向聊天历史记录里面 PUSH 一条数据 或者 多条
+          this.pushCurrentIMInfoMessages(...analysisNewMessage(res.MSG))
         }
       }).catch(() => {
         // TODO 发送失败
